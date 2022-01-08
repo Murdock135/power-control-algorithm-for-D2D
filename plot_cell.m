@@ -19,19 +19,10 @@ c_y1 = 0; %BS Location Center Cell y-axis
 
 N = 2; %number of D2D users
 M = 1; %number of cellular users
-UEd_locations = zeros(N,2);
-UEc_locations = zeros(M,2);
+UEd_locations = rand(N,2)*radius;
+UEc_locations = rand(M,2)*radius;
 
-%setting the D2D user locations
-for i=1:N
-    UEd_locations(i,1) = rand(1,1)*radius*cos(2*pi); %setting the x coordinates of UEd
-    UEd_locations(1,i) = rand(1,1)*radius*sin(2*pi); %setting the y coordinates of UEd
-end
-%setting the C-user location
-for j=1:M
-    UEc_locations(j,1) = rand(1,1)*radius*cos(2*pi); %setting the x coordinates of UEc
-    UEc_locations(j,i) = rand(1,1)*radius*sin(2*pi); %setting the y coordinates of UEc
-end
+
 
 %plotting the cell
 plot(x1,y1);

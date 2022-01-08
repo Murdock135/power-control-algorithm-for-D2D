@@ -1,0 +1,4 @@
+%creating cell
+[UEd_locations, UEc_locations] = plot_cell(5);
+
+%Euclidean Distance between the devices
