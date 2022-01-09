@@ -33,6 +33,7 @@ p_initial = ones(1,number_of_cellular_users+number_of_D2D_users).*2.22*10e-16; %
 
 for i=1:length(set_of_users)
 
-
-
+    total_interference = 0;
+    sigmoid_factor = -1 + (2./(1+exp.^-(a*(total_interference/h(i)))));
+end
 
