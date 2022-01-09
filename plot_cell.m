@@ -1,4 +1,4 @@
-function [UEd_locations, UEc_locations] = plot_cell(cell_radius)
+function [UEd_locations, UEc_locations] = plot_cell(cell_radius, UEds, UEcs)
 %Input the cell-radius in meters
 %Output: Plots the cell layout with cell-centres
 %Output
@@ -17,11 +17,10 @@ c_y1 = 0; %BS Location Center Cell y-axis
 
 
 
-N = 2; %number of D2D users
-M = 1; %number of cellular users
+N = UEds; %number of D2D users
+M = UEcs; %number of cellular users
 UEd_locations = rand(N,2)*radius;
 UEc_locations = rand(M,2)*radius;
-
 
 
 %plotting the cell
