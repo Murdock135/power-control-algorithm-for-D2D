@@ -29,10 +29,19 @@ a = 20;
 
 p_max = 1000*10e-3;%maximum power
 noise = 8*10e-17; %background noise
-p_initial = ones(1,number_of_cellular_users+number_of_D2D_users).*2.22*10e-16; %initial power for all users
+p_initial = ones(1,length(set_of_users)).*2.22*10e-16; %initial power for all users
+p = zeros(1, length(set_of_users));
+y = [];
+%%
+for algo_iter=1:100
+    for i=1:length(set_of_users)
+        interference(i) = noise + p_initial - p_initial(i);  %interference for ith user
+        y(i) = (p(i)*channel_gains(i))/total_interference;
+        sigmoid_factor = -1 + (2./(1+exp.^-(a*(total_interference(i-1)/channel_gains(i)))));
+        
+        
+    end
+end
 
-for i=1:length(set_of_users)
 
-    sigmoid_factor = (2./(1+exp.^-(a*(t))))
-
-
+    

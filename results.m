@@ -1,4 +1,4 @@
-
+clear all; close all;
 %creating cell
 number_of_D2D_users = 2;
 number_of_cellular_users = 1;
@@ -17,7 +17,7 @@ D = pdist(set_of_users);
 
 %calculating channel gain between users
 K = 1; %constant
-channel_gains = K./D.^4;
+h = K./D.^4;
 
 target_sir = 5;%target SIR
 
@@ -29,11 +29,27 @@ a = 20;
 
 p_max = 1000*10e-3;%maximum power
 noise = 8*10e-17; %background noise
-p_initial = ones(1,number_of_cellular_users+number_of_D2D_users).*2.22*10e-16; %initial power for all users
+p_initial = ones(1,length(set_of_users)).*2.22*10e-16; %initial power for all users
+p = p_initial;
+set_of_power_of_UEs_times_channel_attenuation = p.*h; 
+y = [];
 
-for i=1:length(set_of_users)
+%%
+for algo_iter=1:100
+    for i=1:length(set_of_users)
 
-    total_interference = 0;
-    sigmoid_factor = -1 + (2./(1+exp.^-(a*(total_interference/h(i)))));
+        interference(i) = noise + sum(set_of_power_of_UEs_times_channel_attenuation, "all") - set_of_power_of_UEs_times_channel_attenuation(i);  %interference for ith user using prev P
+        y(i) = (p(i).*h(i))./interference(i); %ith user SIR using prev P
+        sigmoid_factor(i) = -1 + (2./(1+exp(-(a.*(interference(i)./h(i)))))); %ith user SIR using prev P
+        p(i) = (p(i)./y(i)).*target_sir -  (p(i)./y(i)).*sigmoid_factor(i); %Changing the power of the ith user.
+
+    end
+    set_of_power_of_UEs_times_channel_attenuation = p.*h;
+    total_interference = sum(interference, "all");
 end
+disp(total_interference);
 
+
+
+
+    

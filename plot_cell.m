@@ -19,6 +19,7 @@ c_y1 = 0; %BS Location Center Cell y-axis
 
 N = UEds; %number of D2D users
 M = UEcs; %number of cellular users
+
 UEd_locations = rand(N,2)*radius;
 UEc_locations = rand(M,2)*radius;
 
