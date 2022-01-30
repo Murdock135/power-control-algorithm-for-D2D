@@ -1,8 +1,7 @@
 function [UEd_locations, UEc_locations] = plot_cell(cell_radius, UEds, UEcs)
 %Input the cell-radius in meters, even number of UEds and any number of
 %UEcs
-%Output: Plots the cell layout with cell-centres
-%Output
+%Output: Plots the cell and store the locations of all UEs
 
 radius = cell_radius;  %radius in meters.
 
