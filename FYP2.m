@@ -76,4 +76,3 @@ for device=1:UEd
     I(device,t) = pi(:,t-1)'*gii(1:UEd,1)-pi(device,t-1)*gii(1,1)+pk(:,1)'*gik(1:UEc,1);
     yd(device,t) = (pi(device,t-1)*gii(1,1))/I(device,t) 
 end
-
