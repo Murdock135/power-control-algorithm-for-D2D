@@ -48,7 +48,8 @@ c = 10;
 
 % initial time
 t = 1;
-while pi<pmax
+%while pi<pmax
+while t<100000
     if pi(:)>=pmax
         disp('pi is bigger than pmax')
     end
@@ -64,7 +65,7 @@ while pi<pmax
 %             pi(device,t+1) = pi(device,t)
 %         end
     end
-    t = t+1
+    t = t+1;
 end
 
 % omitting the power values at the t(end), because they're greater than
@@ -72,7 +73,7 @@ end
 pi = pi(:,1:end-1);
 
 % displaying the final time
-t-1 % Final time is t=t-1 because at t=t, the pi's are actually greater than pmax.
+t-1; % Final time is t=t-1 because at t=t, the pi's are actually greater than pmax.
 
 % calculate system parameters after the powers have converged
 % for device=1:UEd
@@ -86,8 +87,16 @@ J1 = 2.*gii./Id(1,:).*sigmoid(1,:).*pi(1,:)+c.*(tau-yd(1,:)).^2;
 %% plots
 
 figure(1)
-plot(1:t-1,log(pi(1,:)))
+plot(1:t-1,pi(1,:))
+ylabel('power')
 figure(2)
 plot(1:t-1,yd(1,:))
+ylabel('Interference to UEd1')
 figure(3)
 plot(1:t-1,J1)
+figure(4)
+plot(1:t-1,sigmoid(1,:))
+ylabel('sigmoid')
+figure(5)
+plot(1:t-1,yd(1,:))
+ylabel('SIR_UEd1')

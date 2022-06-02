@@ -44,12 +44,14 @@ av_sir=sum(sir)/noOfNodes;
 av_p=sum(p)/noOfNodes;
 p;
 t;
+jcost = ones(noOfNodes,1);
 for i=1:noOfNodes
     prec(i)=p(i)*h(i);
     %jcost(i)=b*p(i)+c*(sirsu_tar-sir(i))^2;
     %jcost(i)=(sirsu_tar-sir(i))^(2)+b*p(i);
     sigmoid_factor(i) = 2/(1+exp(-2.*((b/c).*(sir(i)/h(i)))))-1;
-    jcost(i)=(2*h(i)/sir(i))*sigmoid_factor(i)+c*(sirsu_tar-sir(i))^2;
+    %jcost(i)=(2*h(i)/sir(i))*sigmoid_factor(i)+c*(sirsu_tar-sir(i))^2;
+    %jcost(i,:)=(2*h(i)/sirt(i,:))*sigmoid_factor(i)+c*(sirsu_tar-sir(i))^2;
 end
 %prec
 figure(2)
