@@ -30,7 +30,7 @@ v = zeros(L,1);
 N=0.01*ones(L,1); % Noise power at each receiver 
 % specify required SIR levels at each receiver
 Tau=[0.1;0.2 ; 0.3]; %target SIR at each receiver
-pmax = 0.5; %unit mW
+pmax = 0.2; %unit mW
 %%
 
 %init G
@@ -61,7 +61,7 @@ end
 
 
 
-P=pmax*ones(L,1); % initial transmit Power
+P=pmax*ones(L,1); % initial transmit Power is set to maximum power
 a=diag(G);D=diag(a); % D is a matrix containing only the intended link gains
 SIR=D*P./(F*D*P+N);
 global b c
@@ -90,16 +90,16 @@ while max(Err(:,iterations))>0.006  % I choose maximum erro to be a divergence c
     P=((Tau./SIR(:,iterations)).*P)-sigmoid(P,SIR(:,iterations)).*P./SIR(:,iterations); % New power used by transmitters
     iterations=iterations+1;
     SIR(:,iterations)=D*P./(F*D*P+N);% new SIR
-    conv_condition = SIR(:,iterations)>max_I;
-    for i=1:length(conv_condition)
-        if conv_condition(i)==1
-            disp("convergence conditions broken")
-            flag = 1;
-        end
-    end
-    if flag==1
-        break
-    end
+%     conv_condition = SIR(:,iterations)>max_I;
+%     for i=1:length(conv_condition)
+%         if conv_condition(i)==1
+%             flag = 1;
+%         end
+%     end
+%     if flag==1
+%         disp("convergence conditions broken")
+%         break
+%     end
     Err(:,iterations)=abs(Tau- SIR(:,iterations)); %error
 
 end
