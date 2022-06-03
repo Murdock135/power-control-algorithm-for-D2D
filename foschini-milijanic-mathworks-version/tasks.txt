@@ -1,0 +1,1 @@
+use infinite_loop_1.mat parameters and change error threshold to show impact of error threshold on convergence.
