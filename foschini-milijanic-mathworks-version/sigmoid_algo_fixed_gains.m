@@ -110,11 +110,20 @@ end
 Err(:,end)
 SIR(:,end)
 P
-%%
-%ploting 
+%% Plots
+% SIR
 x=1:iterations;
+figure(1)
 plot(x,SIR(1,:),'-.',x,SIR(2,:),'-.g',x,SIR(3,:),'-.r')
  xlabel('Iterations')
  ylabel('SIR')
  title('SIR vs number of Iterations');
      legend(' SIR of user 1',' SIR of user 2',' SIR of user 3');
+
+% power
+figure(2)
+plot(x,Pt(1,:),'-.',x,Pt(2,:),'-.g',x,Pt(3,:),'-.r')
+ xlabel('Iterations')
+ ylabel('Power')
+ title('Power vs number of Iterations');
+     legend(' Power of user 1',' Power of user 2',' Power of user 3');
