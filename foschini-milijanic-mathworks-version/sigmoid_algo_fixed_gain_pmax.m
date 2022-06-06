@@ -29,7 +29,7 @@ F = zeros(L,L);
 v = zeros(L,1);
 N=0.01*ones(L,1); % Noise power at each receiver 
 % specify required SIR levels at each receiver
-Tau=[0.2;1.85 ; 0.3]; %target SIR at each receiver
+Tau=[0.1;0.2 ; 0.3]; %target SIR at each receiver
 pmax = 1; %unit mW
 %%
 
@@ -86,10 +86,10 @@ max_I = diag(max_I)
 %algorithm starts here
 iterations=1;
 Err=ones(L,1); %some initial error value  
-while max(Err(:,iterations))>0.01  % I choose maximum erro to be a divergence criteria
+while max(Err(:,iterations))>0.006  % I choose maximum erro to be a divergence criteria
      
     P=((Tau./SIR(:,iterations)).*P)-sigmoid(P,SIR(:,iterations)).*P./SIR(:,iterations); % New power used by transmitters
-    %P = min(P,pmax);
+    P = min(P,pmax);
     iterations=iterations+1;
     Pt(:,iterations) = P; % storing the new P 
     SIR(:,iterations)=D*P./(F*D*P+N);% new SIR
