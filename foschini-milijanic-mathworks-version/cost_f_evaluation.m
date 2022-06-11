@@ -23,13 +23,13 @@ clc, clear all, clf
 % pmax: upper bound of the total power constraints.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-L = 2;
+L = 4;
 G = zeros(L,L) % Gii are diagonal elements, Gij are off-diagonal
 F = zeros(L,L); 
 v = zeros(L,1);
 N=0.01*ones(L,1); % Noise power at each receiver 
 % specify required SIR levels at each receiver
-Tau=[5;5 ;5] %target SIR at each receiver
+Tau=[0.5;0.5 ;0.5;0.5] %target SIR at each receiver
 pmax = 1 %unit mW
 %%
 
