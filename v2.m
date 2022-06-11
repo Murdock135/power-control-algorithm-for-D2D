@@ -100,3 +100,6 @@ ylabel('sigmoid')
 figure(5)
 plot(1:t-1,yd(1,:))
 ylabel('SIR_UEd1')
+
+%% Cost function evaluation
+
