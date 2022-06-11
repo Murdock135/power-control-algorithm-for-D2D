@@ -29,7 +29,7 @@ F = zeros(L,L);
 v = zeros(L,1);
 N=0.01*ones(L,1); % Noise power at each receiver 
 % specify required SIR levels at each receiver
-Tau=[0.7;0.7 ; 0.7] %target SIR at each receiver
+Tau=[0.1;0.2 ; 0.3] %target SIR at each receiver
 pmax = 1 %unit mW
 %%
 
@@ -128,3 +128,8 @@ plot(x,Pt(1,:),'-.',x,Pt(2,:),'-.g',x,Pt(3,:),'-.r')
  ylabel('Power')
  title('Power vs number of Iterations');
      legend(' Power of user 1',' Power of user 2',' Power of user 3');
+
+
+%% table
+
+T = table(Tau,Pt(:,1),P,SIR(:,end))

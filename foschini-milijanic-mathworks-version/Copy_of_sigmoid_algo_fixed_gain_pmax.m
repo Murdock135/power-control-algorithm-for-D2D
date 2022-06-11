@@ -24,13 +24,13 @@ clc, clear all, clf
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 L = 3;
-G = [0.8 0.9 0.6; 0.03 0.84 0.9; 0.67 0.75 0.74]; % Gii are diagonal elements, Gij are off-diagonal
+G = [0.8 0.9 0.6; 0.03 0.84 0.9; 0.67 0.75 0.74] % Gii are diagonal elements, Gij are off-diagonal
 F = zeros(L,L); 
 v = zeros(L,1);
 N=0.01*ones(L,1); % Noise power at each receiver 
 % specify required SIR levels at each receiver
-Tau=[0.2;1.85 ; 0.3]; %target SIR at each receiver
-pmax = 1; %unit mW
+Tau=[0.1;0.2 ; 0.3] %target SIR at each receiver
+pmax = 1 %unit mW
 %%
 
 %init G
@@ -86,7 +86,8 @@ max_I = diag(max_I)
 %algorithm starts here
 iterations=1;
 Err=ones(L,1); %some initial error value  
-while max(Err(:,iterations))>0.01  % I choose maximum erro to be a divergence criteria
+while iterations<30
+%while max(Err(:,iterations))>0.006  % I choose maximum erro to be a divergence criteria
      
     P=((Tau./SIR(:,iterations)).*P)-sigmoid(P,SIR(:,iterations)).*P./SIR(:,iterations); % New power used by transmitters
     %P = min(P,pmax);
@@ -127,3 +128,8 @@ plot(x,Pt(1,:),'-.',x,Pt(2,:),'-.g',x,Pt(3,:),'-.r')
  ylabel('Power')
  title('Power vs number of Iterations');
      legend(' Power of user 1',' Power of user 2',' Power of user 3');
+
+
+%% table
+
+T = table(Tau,Pt(:,1),P,SIR(:,end))
