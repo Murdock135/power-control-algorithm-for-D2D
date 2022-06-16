@@ -84,12 +84,17 @@ hold on
 plot(pi_initial(J_i==min(J_i)),min(J_i),'o')
 
 %% Game simulation
+clc;
 % resetting the values
 d_ii = 200; % distance between "intended" or communicating d2d devices i->i
 d_ko = 200; % distance between cellular and base-station
 d_ik = 200; % distance between d2d and cellular 
 pk = 0.1; % [W]
 n = 0.000001; % noise
+b = 2;
+c = 10;
+tau = 3;
+pmax = 1;
 % channel gains
 gii = 1.*(100./d_ii).^2; % link gain from ith d2d to ith d2d device (assuming correlation coef =1)(assuming constant)
 gik = 1.*(100./d_ik).^2; % link gain between d2d and cellular devices
@@ -104,8 +109,8 @@ Ik = 0;
 % getting the optimal strategy of the UEd
 i=1;
 pi_initial = 0;
-pi_upper =1;
-while pi_initial(i)<pi_upper
+
+while pi_initial(i)<pmax
     pi_initial(i);
     Ii = pk*gik+n;
     SIR_i(i) = pi_initial(i)*gii/Ii;
@@ -118,12 +123,30 @@ pi_initial = pi_initial(1:i-1);
 % plot
 figure
 plot(pi_initial(:),J_i)
+hold on
 plot(pi_initial(J_i==min(J_i)),min(J_i),'o')
-xlabel('pi')
-ylabel('J_i')
-title('cost of UEc vs pi')
 hold on
 
+pi = pi_initial(J_i==min(J_i))
 % getting the optimal strategy of the UEc
+pk_initial = 0;
 
+i=1;
+while pk_initial(i)<pmax
+    pk_initial(i);
+    Ik = pi*gii+n;
+    SIR_k(i) = pk_initial(i)*gko/Ik;
+    current_sig = sigmoid(Ik,gko);
+    J_k(i) = 2*gko/Ik*current_sig*pk_initial(i)+c*(tau-SIR_k(i))^2;
+    pk_initial(i+1) = pk_initial(i)+0.001;
+    i = i+1;
+end
+pk_initial = pk_initial(1:i-1);
 
+plot(pk_initial(:),J_k,'g')
+hold on
+plot(pk_initial(J_k==min(J_k)),min(J_k),'o')
+
+xlabel('pi')
+ylabel('J_i')
+title('Optimal strategies of UEd and UEc')
