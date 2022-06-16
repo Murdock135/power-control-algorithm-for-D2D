@@ -32,7 +32,7 @@ tau = 05; % target SIR is 5
 b = 2;
 c = 10;
 %% J vs gii
-Ik(1) = 0;
+Ii(1) = 0;
 SIR_i(1,1) = 0;
 J_i(1) = 0;
 J_UEc(1) = 0;
@@ -41,9 +41,9 @@ J_UEc(1) = 0;
 i=1;
 g_upper = 200;
 while gii(1,i)<g_upper
-    Ik = pk*gik+pj'*gij+n;
-    SIR_i(1,i) = pi*gii(1,i)/Ik;
-    J_i(i) = (2*gii(1,i)/Ik).*sigmoid(Ik,gii(1,i))*pi+c.*(tau-SIR_i(1,i))^2;
+    Ii = pk*gik+pj'*gij+n;
+    SIR_i(1,i) = pi*gii(1,i)/Ii;
+    J_i(i) = (2*gii(1,i)/Ii).*sigmoid(Ii,gii(1,i))*pi+c.*(tau-SIR_i(1,i))^2;
     gii(1,i+1) = gii(1,i) +1;
     i = i+1;
 end
@@ -61,15 +61,15 @@ title('cost vs gii')
 gii = gii(1);
 J_i = 0;
 SIR_i = 0;
-Ik = 0;
+Ii = 0;
 
 i=1;
 pi_initial = pi;
 pi_upper =0.15;
 while pi_initial(i)<pi_upper
-    Ik = pk*gik+pj'*gij+n;
-    SIR_i(i) = pi_initial(i)*gii/Ik;
-    J_i(i) = (2*gii/Ik).*sigmoid(Ik,gii)*pi_initial(i)+c.*(tau-SIR_i(i))^2;
+    Ii = pk*gik+pj'*gij+n;
+    SIR_i(i) = pi_initial(i)*gii/Ii;
+    J_i(i) = (2*gii/Ii).*sigmoid(Ii,gii)*pi_initial(i)+c.*(tau-SIR_i(i))^2;
     pi_initial(i+1) = pi_initial(i) + 0.001;
     i = i+1;
 end
@@ -85,15 +85,17 @@ plot(pi_initial(J_i==min(J_i)),min(J_i),'o')
 
 %% Game simulation
 clc;
-% resetting the values
+clear; close all;
+
+%% UEc initial transmit power 100 W
 d_ii = 200; % distance between "intended" or communicating d2d devices i->i
 d_ko = 200; % distance between cellular and base-station
 d_ik = 200; % distance between d2d and cellular 
-pk = 0.1; % [W]
+pk = 0.2; % [W]
 n = 0.000001; % noise
 b = 2;
 c = 10;
-tau = 3;
+tau = 2.5;
 pmax = 1;
 % channel gains
 gii = 1.*(100./d_ii).^2; % link gain from ith d2d to ith d2d device (assuming correlation coef =1)(assuming constant)
@@ -119,6 +121,8 @@ while pi_initial(i)<pmax
     pi_initial(i+1) = pi_initial(i) + 0.001;
     i = i+1;
 end
+pi = pi_initial(J_i==min(J_i)) % optimal strategy
+
 pi_initial = pi_initial(1:i-1);
 % plot
 figure
@@ -127,10 +131,7 @@ hold on
 plot(pi_initial(J_i==min(J_i)),min(J_i),'o')
 hold on
 
-pi = pi_initial(J_i==min(J_i))
-% getting the optimal strategy of the UEc
 pk_initial = 0;
-
 i=1;
 while pk_initial(i)<pmax
     pk_initial(i);
@@ -141,12 +142,14 @@ while pk_initial(i)<pmax
     pk_initial(i+1) = pk_initial(i)+0.001;
     i = i+1;
 end
-pk_initial = pk_initial(1:i-1);
+pk = pk_initial(J_k==min(J_k))
 
+
+pk_initial = pk_initial(1:i-1);
 plot(pk_initial(:),J_k,'g')
 hold on
 plot(pk_initial(J_k==min(J_k)),min(J_k),'o')
-
+hold on
 xlabel('pi')
 ylabel('J_i')
 title('Optimal strategies of UEd and UEc')
