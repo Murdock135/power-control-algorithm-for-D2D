@@ -18,14 +18,14 @@ pj = ones(UEd-2,1)*0.02; % power vector of p(-i) or jth d2d user [w]
 n = 0.0001; % noise
 % channel gains
 gii(1,1) = 1.*(100./d_ii).^2; % link gain from ith d2d to ith d2d device (assuming correlation coef =1)(assuming constant)
-gij(UEd-2,1) = 1.*(100./d_ij).^2.*ones(UEd-2,1); % link gain from jth d2d to ith d2d device (assuming correlation coef =1)(assuming constant)
+gij = 1.*(100./d_ij).^2.*ones(UEd-2,1); % link gain from jth d2d to ith d2d device (assuming correlation coef =1)(assuming constant)
 gik = 1.*(100./d_ik).^2; % link gain between d2d and cellular devices
 
 
 %%  algorithm parameters
 
 pmax = 1000e-3; % 1000 mW
-tau = 5; % target SIR is 5 
+tau = 05; % target SIR is 5 
 
 % sigmoid parameters
 b = 2;
@@ -35,14 +35,43 @@ Id(1) = 0;
 SIR(1,1) = 0;
 J(1) = 0;
 
-% J vs gii
+% J vs gii 
 i=1;
-while gii(1,i)<100
+g_upper = 200;
+while gii(1,i)<g_upper
     I = pk*gik+pj'*gij+n;
     SIR(1,i) = pi*gii(1,i)/I;
     J(i) = (2*gii(1,i)/I).*sigmoid(I,gii(1,i))+c.*(tau-SIR(1,i))^2;
-    gii(1,i+1) = gii +1;
+    gii(1,i+1) = gii(1,i) +1;
     i = i+1;
 end
+gii = gii(1,1:i-1);
+% plot
+figure
+plot(gii(:),J)
+xlabel('gii')
+ylabel('J')
+title('cost vs gii')
 
-%% plots
+
+% J vs tau
+gii = gii(1);
+i=1;
+tau_initial = tau;
+tau_upper = 6;
+while tau_initial(1,i)<tau_upper
+    I = pk*gik+pj'*gij+n;
+    SIR(1,i) = pi*gii/I;
+    J(i) = (2*gii/I).*sigmoid(I,gii)+c.*(tau_initial(i)-SIR(1,i))^2;
+    tau_initial(i+1) = tau_initial(i) + 0.005;
+    i = i+1;
+end
+tau_initia
+%gii = gii(1,1:i-1);
+% plot
+figure
+plot(gii(:),J)
+xlabel('gii')
+ylabel('J')
+title('cost vs gii')
+
