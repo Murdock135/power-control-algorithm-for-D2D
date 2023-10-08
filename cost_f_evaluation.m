@@ -26,10 +26,10 @@ gik = 1.*(100./d_ik).^2; % link gain between d2d and cellular devices
 %%  algorithm parameters
 
 pmax = 1000e-3; % 1000 mW
-tau = 05; % target SIR is 5 
+tau = 3; % target SIR is 5 
 
 % sigmoid parameters
-b = 2;
+b = 1;
 c = 10;
 %% J vs gii
 Ii(1) = 0;
